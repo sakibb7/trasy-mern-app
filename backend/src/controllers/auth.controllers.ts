@@ -1,6 +1,7 @@
 import { CREATED } from "../constants/http";
 import { createAccount } from "../services/auth.services";
 import catchErrors from "../utils/catchErrors";
+import { setAuthCookies } from "../utils/cookies";
 import { registerSchema } from "./auth.schemas";
 
 export const registerHandler = catchErrors(async (req, res) => {
@@ -15,7 +16,9 @@ export const registerHandler = catchErrors(async (req, res) => {
   console.log(`request ${request}`);
 
   //call service
-  const { user } = await createAccount(request);
+  const { user, accessToken, refreshToken } = await createAccount(request);
 
-  return res.status(CREATED).json(user);
+  return setAuthCookies({ res, accessToken, refreshToken })
+    .status(CREATED)
+    .json(user);
 });

@@ -1,6 +1,8 @@
 import { CONFLICT } from "../constants/http";
+import SessionModel from "../models/session.model";
 import UserModel from "../models/user.model";
 import appAssert from "../utils/appAssert";
+import { refreshTokenSignOptions, signToken } from "../utils/jwt";
 
 export type CreataAccountParams = {
   email: string;
@@ -22,5 +24,22 @@ export const createAccount = async (data: CreataAccountParams) => {
     password: data.password,
   });
 
-  return { user };
+  const userId = user._id;
+
+  //create session
+  const session = await SessionModel.create({
+    userId,
+    userAgent: data.userAgent,
+  });
+
+  //sign refresh token
+  const refreshToken = signToken(
+    { sessionId: session._id },
+    refreshTokenSignOptions
+  );
+
+  //access token
+  const accessToken = signToken({ userId, sessionId: session._id });
+
+  return { user: user.omitPassword(), accessToken, refreshToken };
 };
