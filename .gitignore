@@ -30,4 +30,6 @@ dist-ssr
 .env
 .env.e2e
 
-.next
+# next.js
+/.next/
+/out/
