@@ -35,8 +35,8 @@ dist-ssr
 /out/
 
 # next.js
-/.next/
-/out/
+.next
+out
 
 # production
 /build
