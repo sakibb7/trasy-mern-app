@@ -1,5 +1,5 @@
-import { SignInFormData } from "@/app/sign-in/page";
-import { RegisterFormData } from "@/app/sign-up/page";
+import { SignInFormData } from "@/app/(auth)/sign-in/page";
+import { RegisterFormData } from "@/app/(auth)/sign-up/page";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
@@ -33,4 +33,16 @@ export const signIn = async (formData: SignInFormData) => {
   if (!response.ok) {
     throw new Error(responseBody.message);
   }
+};
+
+export const getUser = async () => {
+  const response = await fetch(`${API_BASE_URL}/user`, {
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Token Invalid");
+  }
+
+  return response.json();
 };

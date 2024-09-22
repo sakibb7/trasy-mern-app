@@ -17,6 +17,10 @@ const config: Config = {
         "3xl": "1600px",
         "4xl": "1800px",
       },
+      padding: {
+        30: "120px",
+        15: "60px",
+      },
     },
   },
   plugins: [],
