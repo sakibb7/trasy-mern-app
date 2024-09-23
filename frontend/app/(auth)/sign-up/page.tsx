@@ -7,6 +7,7 @@ import Image from "next/image";
 import signInBg from "@/assets/images/sign-in-img.jpg";
 import logo from "@/assets/images/icon.png";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export type RegisterFormData = {
   email: string;
@@ -15,6 +16,7 @@ export type RegisterFormData = {
 };
 
 export default function SignUpPage() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const {
     register,
@@ -28,6 +30,7 @@ export default function SignUpPage() {
     onSuccess: async () => {
       console.log("Success");
       await queryClient.invalidateQueries({ queryKey: ["validate-token"] });
+      router.push("/");
     },
     onError: (error: Error) => {
       console.log(error);
@@ -35,7 +38,6 @@ export default function SignUpPage() {
   });
 
   const onSubmit = handleSubmit((data: RegisterFormData) => {
-    console.log(data);
     mutate(data);
   });
 

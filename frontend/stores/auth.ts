@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+
 // Define User type
 export interface User {
   id: string;
@@ -9,21 +11,39 @@ export interface User {
 // Define Zustand Store type
 interface UserStore {
   user: User | null;
+  isAuthenticated: boolean;
+  error: boolean | null;
   isLoading: boolean;
-  isError: boolean;
-  setUser: (user: User | null) => void;
-  setLoading: (isLoading: boolean) => void;
-  setError: (isError: boolean) => void;
+  isCheckingAuth: boolean;
+  checkAuth: () => void;
 }
 
 // User store using Zustand
 const useUserStore = create<UserStore>((set) => ({
   user: null,
+  isAuthenticated: false,
+  error: null,
   isLoading: false,
-  isError: false,
-  setUser: (user: User | null) => set(() => ({ user })),
-  setLoading: (isLoading) => set({ isLoading }),
-  setError: (isError) => set({ isError }),
+  isCheckingAuth: true,
+  checkAuth: async () => {
+    set({ isCheckingAuth: true, error: null });
+    try {
+      const response = await fetch(`${API_BASE_URL}/user`, {
+        credentials: "include",
+      });
+
+      const userData = await response.json();
+
+      set({
+        user: userData.user,
+        isAuthenticated: true,
+        isCheckingAuth: false,
+      });
+    } catch (error) {
+      set({ error: null, isCheckingAuth: false, isAuthenticated: false });
+      console.log(error);
+    }
+  },
 }));
 
 export default useUserStore;

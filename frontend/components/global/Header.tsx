@@ -3,16 +3,27 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuChevronDown } from "react-icons/lu";
-const isLoggedIn = false;
 import userImg from "@/assets/images/user-sample-img.jpg";
 import { PiGear, PiHouse, PiSignOut, PiUser } from "react-icons/pi";
 import logo from "@/assets/images/icon.png";
+import useUserStore from "@/stores/auth";
+import SignOutButton from "../buttons/SignOutButton";
 
 export default function Header() {
   const [showRegionModal, setShowRegionModal] = useState(false);
   const { modalRef, modal, setModal } = useClickOutside();
+
+  const { isAuthenticated, isCheckingAuth, checkAuth } = useUserStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  if (isCheckingAuth) {
+    return <p>Authentication checking...</p>;
+  }
 
   return (
     <header className=" py-4">
@@ -90,7 +101,7 @@ export default function Header() {
               </div>
             </div>
           </div>
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <>
               <div className="relative">
                 <div
@@ -139,6 +150,7 @@ export default function Header() {
                     </li>
                     <li className="px-6 py-2 flex justify-start items-center gap-2 hover:bg-sky-50 duration-300">
                       <PiSignOut />
+                      <SignOutButton />
                     </li>
                   </ul>
                 </div>

@@ -7,6 +7,7 @@ import Link from "next/link";
 import signInBg from "@/assets/images/sign-in-img.jpg";
 import logo from "@/assets/images/icon.png";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export type SignInFormData = {
   email: string;
@@ -21,6 +22,7 @@ export default function SignInPage() {
   } = useForm<SignInFormData>();
 
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { mutate } = useMutation({
     mutationFn: apiClient.signIn,
@@ -28,6 +30,7 @@ export default function SignInPage() {
       await queryClient.invalidateQueries({ queryKey: ["validate-token"] });
 
       console.log(`Sing In Successfull`);
+      router.push("/");
     },
     onError: (error: Error) => {
       console.log(error);
