@@ -56,3 +56,16 @@ export const getUser = async () => {
 
   return response.json();
 };
+
+export const removeUser = async () => {
+  const response = await fetch(`${API_BASE_URL}/user/remove`, {
+    credentials: "include",
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Token Invalid");
+  }
+
+  return response.json();
+};

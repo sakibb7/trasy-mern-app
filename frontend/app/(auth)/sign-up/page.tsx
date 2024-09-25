@@ -10,6 +10,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export type RegisterFormData = {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -64,6 +66,38 @@ export default function SignUpPage() {
           </p>
 
           <form onSubmit={onSubmit} className="pt-6 flex flex-col gap-4 w-full">
+            <label className="w-full text-slate-500 text-sm">
+              First Name
+              <div className="border border-slate-300 rounded-md p-2">
+                <input
+                  type="text"
+                  placeholder="John"
+                  className="w-full outline-none bg-transparent text-gray-700"
+                  {...register("firstName", {
+                    required: "This First Name field is required",
+                  })}
+                />
+              </div>
+              {errors.firstName && (
+                <span className="text-red-500">{errors.firstName.message}</span>
+              )}
+            </label>
+            <label className="w-full text-slate-500 text-sm">
+              Last Name
+              <div className="border border-slate-300 rounded-md p-2">
+                <input
+                  type="text"
+                  placeholder="Doe"
+                  className="w-full outline-none bg-transparent text-gray-700"
+                  {...register("lastName", {
+                    required: "This Last Name field is required",
+                  })}
+                />
+              </div>
+              {errors.lastName && (
+                <span className="text-red-500">{errors.lastName.message}</span>
+              )}
+            </label>
             <label className="w-full text-slate-500 text-sm">
               Email
               <div className="border border-slate-300 rounded-md p-2">

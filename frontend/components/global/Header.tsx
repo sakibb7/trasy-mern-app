@@ -3,27 +3,26 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LuChevronDown } from "react-icons/lu";
 import userImg from "@/assets/images/user-sample-img.jpg";
 import { PiGear, PiHouse, PiSignOut, PiUser } from "react-icons/pi";
 import logo from "@/assets/images/icon.png";
-import useUserStore from "@/stores/auth";
 import SignOutButton from "../buttons/SignOutButton";
+import { useFetchUser } from "@/hooks/useFetchUser";
+import useUserStore from "@/stores/auth";
 
 export default function Header() {
   const [showRegionModal, setShowRegionModal] = useState(false);
   const { modalRef, modal, setModal } = useClickOutside();
+  const { isAuthenticated } = useUserStore();
+  const { isLoading } = useFetchUser();
 
-  const { isAuthenticated, isCheckingAuth, checkAuth } = useUserStore();
-
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
-
-  if (isCheckingAuth) {
+  if (isLoading) {
     return <p>Authentication checking...</p>;
   }
+
+  console.log(isAuthenticated);
 
   return (
     <header className=" py-4">
@@ -126,7 +125,7 @@ export default function Header() {
                   <ul className="flex flex-col">
                     <li className="">
                       <Link
-                        href={"/my-hotels"}
+                        href={"/my-profile"}
                         className="px-6 py-2 text-nowrap flex justify-start items-center gap-2 hover:bg-sky-50 duration-300"
                       >
                         <PiUser /> Profile

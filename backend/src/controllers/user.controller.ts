@@ -10,3 +10,10 @@ export const getUserHandler = catchErrors(async (req, res) => {
 
   return res.status(OK).json(user.omitPassword());
 });
+
+export const getRemoveHanlder = catchErrors(async (req, res) => {
+  const user = await UserModel.findByIdAndDelete(req.userId);
+  appAssert(user, NOT_FOUND, "User Not Found");
+
+  return res.status(OK).json({ message: "Account Deleted successfully" });
+});

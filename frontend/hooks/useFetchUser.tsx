@@ -1,19 +1,30 @@
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import * as apiClient from "@/utils/api-client";
-import { User } from "@/stores/auth";
+import useUserStore from "@/stores/auth";
+import { useEffect } from "react";
 
 export const useFetchUser = () => {
-  const queryOptions: UseQueryOptions<User, Error> = {
-    queryKey: ["get-user"],
-    queryFn: apiClient.getUser,
-    retry: false,
-  };
+  const { setIsAuthenticated, setUserData } = useUserStore();
 
   const {
     isError,
     isLoading,
     data: userData,
-  } = useQuery<User, Error>(queryOptions);
+  } = useQuery({
+    queryKey: ["get-user"],
+    queryFn: apiClient.getUser,
+  });
+
+  console.log(`Error:`, isError);
+
+  useEffect(() => {
+    if (!isError) {
+      setIsAuthenticated();
+    }
+    if (userData) {
+      setUserData(userData);
+    }
+  }, []);
 
   return { isError, isLoading, userData };
 };
