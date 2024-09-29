@@ -7,6 +7,7 @@ import connectToDatabase from "./config/db";
 import authRoutes from "./routes/auth.route";
 import authenticate from "./middleware/authenticate";
 import userRoutes from "./routes/user.route";
+import hotelRoutes from "./routes/hotel.route";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/auth", authRoutes);
 
 //protected routes
 app.use("/user", authenticate, userRoutes);
+app.use("/api/hotel", authenticate, hotelRoutes);
 
 app.listen(4005, async () => {
   console.log("App is running on port 4005 in developent environment");
