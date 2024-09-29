@@ -1,13 +1,18 @@
 "use client";
-import { useFetchUser } from "@/hooks/useFetchUser";
+
 import useUserStore from "@/stores/auth";
 import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useUserStore();
-  const { isLoading } = useFetchUser();
+  const { isAuthenticated, isCheckingAuth, checkAuthentication } =
+    useUserStore();
 
-  if (isLoading) {
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
+
+  if (isCheckingAuth) {
     return <p>Loading...</p>;
   }
 

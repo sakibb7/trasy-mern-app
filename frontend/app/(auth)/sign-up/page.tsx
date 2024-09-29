@@ -1,13 +1,12 @@
 "use client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
-import * as apiClient from "@/utils/api-client";
 import Image from "next/image";
 import signInBg from "@/assets/images/sign-in-img.jpg";
 import logo from "@/assets/images/icon.png";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import useUserStore from "@/stores/auth";
 
 export type RegisterFormData = {
   firstName: string;
@@ -19,28 +18,21 @@ export type RegisterFormData = {
 
 export default function SignUpPage() {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const {
     register,
     watch,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormData>();
+  const { signup } = useUserStore();
 
-  const { mutate } = useMutation({
-    mutationFn: apiClient.signUp,
-    onSuccess: async () => {
-      console.log("Success");
-      await queryClient.invalidateQueries({ queryKey: ["validate-token"] });
+  const onSubmit = handleSubmit(async (data: RegisterFormData) => {
+    try {
+      await signup(data);
       router.push("/");
-    },
-    onError: (error: Error) => {
+    } catch (error) {
       console.log(error);
-    },
-  });
-
-  const onSubmit = handleSubmit((data: RegisterFormData) => {
-    mutate(data);
+    }
   });
 
   return (

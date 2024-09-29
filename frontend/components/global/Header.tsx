@@ -3,26 +3,35 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuChevronDown } from "react-icons/lu";
 import userImg from "@/assets/images/user-sample-img.jpg";
 import { PiGear, PiHouse, PiSignOut, PiUser } from "react-icons/pi";
 import logo from "@/assets/images/icon.png";
 import SignOutButton from "../buttons/SignOutButton";
-import { useFetchUser } from "@/hooks/useFetchUser";
 import useUserStore from "@/stores/auth";
 
 export default function Header() {
   const [showRegionModal, setShowRegionModal] = useState(false);
   const { modalRef, modal, setModal } = useClickOutside();
-  const { isAuthenticated } = useUserStore();
-  const { isLoading } = useFetchUser();
+  // const { isAuthenticated } = useUserStore();
+  // const { isLoading } = useFetchUser();
 
-  if (isLoading) {
-    return <p>Authentication checking...</p>;
+  // if (isLoading) {
+  //   return <p>Authentication checking...</p>;
+  // }
+
+  // console.log(isAuthenticated);
+  const { isAuthenticated, isCheckingAuth, checkAuthentication } =
+    useUserStore();
+
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
+
+  if (isCheckingAuth) {
+    return <p>Loading...</p>;
   }
-
-  console.log(isAuthenticated);
 
   return (
     <header className=" py-4">

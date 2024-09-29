@@ -22,9 +22,11 @@ export default function Page() {
     return <p>User not found</p>;
   }
 
+  console.log(user);
+
   return (
     <div>
-      I am the user now
+      I am the user now ===
       {user?.email}
       {user?._id}
       {user.firstName}

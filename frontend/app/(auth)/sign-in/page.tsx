@@ -1,13 +1,11 @@
 "use client";
-
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import * as apiClient from "@/utils/api-client";
 import Link from "next/link";
 import signInBg from "@/assets/images/sign-in-img.jpg";
 import logo from "@/assets/images/icon.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import useUserStore from "@/stores/auth";
 
 export type SignInFormData = {
   email: string;
@@ -21,24 +19,18 @@ export default function SignInPage() {
     handleSubmit,
   } = useForm<SignInFormData>();
 
-  const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { mutate } = useMutation({
-    mutationFn: apiClient.signIn,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["validate-token"] });
+  const { isAuthenticated, login } = useUserStore();
 
-      console.log(`Sing In Successfull`);
+  const onSubmit = handleSubmit(async (data: SignInFormData) => {
+    try {
+      await login(data);
       router.push("/");
-    },
-    onError: (error: Error) => {
+      console.log(isAuthenticated);
+    } catch (error) {
       console.log(error);
-    },
-  });
-
-  const onSubmit = handleSubmit((data: SignInFormData) => {
-    mutate(data);
+    }
   });
 
   return (
