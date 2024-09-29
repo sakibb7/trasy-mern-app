@@ -1,7 +1,7 @@
 import assert from "node:assert";
+import AppError from "./AppError";
 import { HttpStatusCode } from "../constants/http";
 import AppErrorCode from "../constants/appErrorCode";
-import AppError from "./AppError";
 
 type AppAssert = (
   condition: any,
@@ -10,7 +10,7 @@ type AppAssert = (
   appErrorCode?: AppErrorCode
 ) => asserts condition;
 
-// Asserts a condition and throws an App Error if the condition is false
+// Asserts a condition and throws an AppError if the condition is false
 const appAssert: AppAssert = (
   condition,
   httpStatusCode,

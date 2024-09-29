@@ -67,7 +67,6 @@ const useUserStore = create<UserStore>((set) => ({
         },
       });
 
-      console.log(response);
       if (response.statusText === "OK") {
         toast.success(response.data.message);
         set({
@@ -99,7 +98,7 @@ const useUserStore = create<UserStore>((set) => ({
     try {
       set({ loading: true });
       const response = await axios.get(`${API_BASE_URL}/auth/logout`);
-      console.log(response);
+
       if (response.data.statusText === "OK") {
         set({ loading: false, user: null, isAuthenticated: false });
       }

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 type AsyncController = (
   req: Request,
@@ -12,6 +12,7 @@ const catchErrors =
     try {
       await controller(req, res, next);
     } catch (error) {
+      // pass error on
       next(error);
     }
   };
