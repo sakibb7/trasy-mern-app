@@ -6,6 +6,8 @@ import logo from "@/assets/images/icon.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import useUserStore from "@/stores/auth";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "@/utils/api";
 
 export type SignInFormData = {
   email: string;
@@ -19,18 +21,30 @@ export default function SignInPage() {
     handleSubmit,
   } = useForm<SignInFormData>();
 
+  const {
+    mutate: signIn,
+    isPending,
+    isError,
+  } = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      router.push("/");
+    },
+  });
+
   const router = useRouter();
 
-  const { isAuthenticated, login } = useUserStore();
+  // const { isAuthenticated, login } = useUserStore();
 
   const onSubmit = handleSubmit(async (data: SignInFormData) => {
-    try {
-      await login(data);
-      router.push("/");
-      console.log(isAuthenticated);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   await login(data);
+    //   router.push("/");
+    //   console.log(isAuthenticated);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    signIn(data);
   });
 
   return (

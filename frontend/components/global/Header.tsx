@@ -3,33 +3,20 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LuChevronDown } from "react-icons/lu";
 import userImg from "@/assets/images/user-sample-img.jpg";
 import { PiGear, PiHouse, PiSignOut, PiUser } from "react-icons/pi";
 import logo from "@/assets/images/icon.png";
 import SignOutButton from "../buttons/SignOutButton";
-import useUserStore from "@/stores/auth";
+import useAuth from "@/hooks/useAuth";
 
 export default function Header() {
   const [showRegionModal, setShowRegionModal] = useState(false);
   const { modalRef, modal, setModal } = useClickOutside();
-  // const { isAuthenticated } = useUserStore();
-  // const { isLoading } = useFetchUser();
+  const { user, isLoading } = useAuth();
 
-  // if (isLoading) {
-  //   return <p>Authentication checking...</p>;
-  // }
-
-  // console.log(isAuthenticated);
-  const { isAuthenticated, isCheckingAuth, checkAuthentication } =
-    useUserStore();
-
-  useEffect(() => {
-    checkAuthentication();
-  }, []);
-
-  if (isCheckingAuth) {
+  if (isLoading) {
     return <p>Loading...</p>;
   }
 
@@ -109,7 +96,7 @@ export default function Header() {
               </div>
             </div>
           </div>
-          {isAuthenticated ? (
+          {user ? (
             <>
               <div className="relative">
                 <div

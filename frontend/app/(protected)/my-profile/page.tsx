@@ -1,12 +1,13 @@
 "use client";
-import useUserStore from "@/stores/auth";
 import { useMutation } from "@tanstack/react-query";
 import * as apiClient from "@/utils/api-client";
 import { useRouter } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
 
 export default function Page() {
-  const { user } = useUserStore();
+  const { user } = useAuth();
   const router = useRouter();
+
   const { mutate } = useMutation({
     mutationFn: apiClient.removeUser,
     onSuccess: () => {
@@ -21,8 +22,6 @@ export default function Page() {
   if (!user) {
     return <p>User not found</p>;
   }
-
-  console.log(user);
 
   return (
     <div>

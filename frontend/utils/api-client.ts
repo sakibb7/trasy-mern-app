@@ -69,3 +69,25 @@ export const removeUser = async () => {
 
   return response.json();
 };
+
+type HotelFormData = {
+  name: string;
+  location: string;
+};
+
+export const addHotel = async (hotelFormData: HotelFormData) => {
+  const response = await fetch(`${API_BASE_URL}/api/hotel/add-hotel`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json", // Add this header
+    },
+    body: JSON.stringify(hotelFormData),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to add hotel");
+  }
+
+  return response.json();
+};
