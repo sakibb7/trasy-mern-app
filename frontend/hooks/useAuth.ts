@@ -11,14 +11,23 @@ export interface User {
 }
 
 const useAuth = (opts = {}) => {
-  const { data: user, ...rest } = useQuery({
+  const {
+    data: user,
+    isLoading,
+    status,
+    ...rest
+  } = useQuery({
     queryKey: [AUTH],
     queryFn: getUser,
-    staleTime: Infinity,
+    retry: false,
     ...opts,
   });
+
+  console.log(status);
+
   return {
     user,
+    isLoading,
     ...rest,
   };
 };

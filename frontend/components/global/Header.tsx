@@ -14,9 +14,9 @@ import useAuth from "@/hooks/useAuth";
 export default function Header() {
   const [showRegionModal, setShowRegionModal] = useState(false);
   const { modalRef, modal, setModal } = useClickOutside();
-  const { user, isLoading } = useAuth();
+  const { user, isPending } = useAuth();
 
-  if (isLoading) {
+  if (isPending) {
     return <p>Loading...</p>;
   }
 

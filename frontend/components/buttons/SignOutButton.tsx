@@ -1,18 +1,21 @@
 import { useRouter } from "next/navigation";
-import useUserStore from "@/stores/auth";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { logout } from "@/utils/api";
 
 function SignOutButton() {
-  const { logout } = useUserStore();
-
   const router = useRouter();
 
-  const handleClick = async () => {
-    try {
-      await logout();
+  const queryClient = useQueryClient();
+  const { mutate: signOut } = useMutation({
+    mutationFn: logout,
+    onSettled: () => {
+      queryClient.clear();
       router.push("/sign-in");
-    } catch (error) {
-      console.log(error);
-    }
+    },
+  });
+
+  const handleClick = () => {
+    signOut();
   };
 
   return (

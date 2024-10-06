@@ -5,7 +5,6 @@ import signInBg from "@/assets/images/sign-in-img.jpg";
 import logo from "@/assets/images/icon.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import useUserStore from "@/stores/auth";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/utils/api";
 
