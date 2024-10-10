@@ -14,6 +14,8 @@ export const registerSchema = loginSchema
     firstName: z.string().min(1).max(255),
     lastName: z.string().min(1).max(255),
     confirmPassword: z.string().min(6).max(255),
+    city: z.string().max(255),
+    country: z.string().min(6).max(255),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Password do not match",

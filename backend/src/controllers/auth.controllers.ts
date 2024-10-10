@@ -23,6 +23,8 @@ export const registerHandler = catchErrors(async (req, res) => {
     userAgent: req.headers["user-agent"],
   });
 
+  console.log(request);
+
   //call service
   const { user, accessToken, refreshToken } = await createAccount(request);
 

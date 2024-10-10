@@ -4,6 +4,7 @@ type AddHotelParams = {
   userId: string;
   name: string;
   location: string;
+  imageUrls: string[];
 };
 
 export const addHotel = async (data: AddHotelParams) => {
@@ -11,6 +12,7 @@ export const addHotel = async (data: AddHotelParams) => {
     name: data.name,
     location: data.location,
     userId: data.userId,
+    imgUrls: data.imageUrls,
   });
 
   return { hotel };

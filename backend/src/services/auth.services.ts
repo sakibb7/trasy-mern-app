@@ -16,6 +16,8 @@ export type CreataAccountParams = {
   email: string;
   password: string;
   userAgent?: string;
+  city: string;
+  country: string;
 };
 
 export const createAccount = async (data: CreataAccountParams) => {
@@ -32,6 +34,8 @@ export const createAccount = async (data: CreataAccountParams) => {
     lastName: data.lastName,
     email: data.email,
     password: data.password,
+    city: data.city,
+    country: data.country,
   });
 
   const userId = user._id;

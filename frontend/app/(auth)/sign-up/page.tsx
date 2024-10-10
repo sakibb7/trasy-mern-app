@@ -14,6 +14,8 @@ export type RegisterFormData = {
   email: string;
   password: string;
   confirmPassword: string;
+  city: string;
+  country: string;
 };
 
 export default function SignUpPage() {

@@ -7,6 +7,8 @@ export interface UserDocument extends mongoose.Document {
   email: string;
   password: string;
   verified: boolean;
+  city: string;
+  country: string;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(val: string): Promise<boolean>;
@@ -16,6 +18,8 @@ export interface UserDocument extends mongoose.Document {
     | "firstName"
     | "lastName"
     | "email"
+    | "city"
+    | "country"
     | "verified"
     | "createdAt"
     | "updatedAt"
@@ -29,6 +33,8 @@ const userSchema = new mongoose.Schema<UserDocument>(
     lastName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    city: { type: String, required: true },
+    country: { type: String, required: true },
     verified: { type: Boolean, required: true, default: false },
   },
   {
